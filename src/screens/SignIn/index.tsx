@@ -1,8 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTheme } from 'styled-components';
-import { Fontisto } from '@expo/vector-icons'
 import { ActivityIndicator, Alert, Modal, View } from 'react-native';
-
 import { useAuth } from '../../hooks/useAuth';
 
 import LoginBannerImg from '../../assets/images/login.svg';
@@ -18,7 +16,8 @@ import {
   Description, 
   SignInButton,
   SignInButtonIcon,
-  SignInButtonText 
+  SignInButtonText, 
+  Icon
 } from './styles';
 
 export function SignIn() {
@@ -29,9 +28,19 @@ export function SignIn() {
     // try to call and wait signIn
     // if fails, display an Alert with the title "Erro SignIn" and message "Ocorreu um erro ao tentar logar no app"
 
-    // const signInButtonProps = {
-    //   onPress: your-signIn-function
-    // }
+
+    function handleSignInWithTwitch(){
+      try {
+        signIn()
+        
+      } catch (error) {
+        Alert.alert(
+          'Erro SignIn', 
+          'Ocorreu um erro ao tentar logar no app'
+        )
+      }
+    }
+
 
   return (
     <Container
@@ -65,19 +74,19 @@ export function SignIn() {
             o mundo da Twitch
           </Description>
 
-          {/* <SignInButton {...signInButtonProps}>
-            <SignInButtonIcon>
-              Verify if isLoggingIn is true
-              If it is, show an ActivityIndicator
-              Otherwise, show Fontisto's twitch icon
-            </SignInButtonIcon>
+          <SignInButton onPress={handleSignInWithTwitch}>
+              <SignInButtonIcon>
+                {isLoggingIn 
+                  ? <ActivityIndicator size={20} color={theme.colors.white}/>
+                  : <Icon name="twitch"/>
+                }
+                
+              </SignInButtonIcon>
 
-            <SignInButtonText>
-              Verify if isLoggingIn is true
-              If it is, show "Entrando..."
-              Otherwise, show "Entrar com Twitch"
-            </SignInButtonText>
-          </SignInButton> */}
+              <SignInButtonText>
+                {isLoggingIn ? 'Entrando...' : 'Entrar com Twitch'}
+              </SignInButtonText>
+          </SignInButton>
         </LoginInfo>
       </Content>
 
